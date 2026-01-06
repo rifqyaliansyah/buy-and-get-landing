@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .price-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .price-label {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .price {
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error {
+            color: #e74c3c;
+            margin-top: 20px;
+            padding: 12px;
+            background: #ffe6e6;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .error.active {
+            display: block;
+        }
+
+        .info {
+            color: #666;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">💳</div>
+        <h1>Halaman Pembayaran</h1>
+        <p class="info" id="codeInfo">Loading...</p>
+
+        <div class="price-section">
+            <div class="price-label">Total Pembayaran</div>
+            <div class="price" id="price">Rp 0</div>
+        </div>
+
+        <button class="btn btn-primary" id="payButton" disabled>
+            Bayar Sekarang
+        </button>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 10px; color: #666;">Memproses pembayaran...</p>
+        </div>
+
+        <div class="error" id="error"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+
+        // Get code from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+
+        if (!code) {
+            showError('Kode pembayaran tidak valid');
+        } else {
+            loadPaymentInfo();
+        }
+
+        // Load payment info
+        async function loadPaymentInfo() {
+            try {
+                const response = await fetch(`${API_URL}/payment/${code}`);
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error(result.message);
+                }
+
+                const { price } = result.data;
+
+                document.getElementById('price').textContent = formatPrice(price);
+                document.getElementById('codeInfo').textContent = `Kode: ${code}`;
+                document.getElementById('payButton').disabled = false;
+
+            } catch (error) {
+                showError('Gagal memuat informasi pembayaran: ' + error.message);
+            }
+        }
+
+        // Handle payment
+        document.getElementById('payButton').addEventListener('click', async () => {
+            const button = document.getElementById('payButton');
+            const loading = document.getElementById('loading');
+
+            button.disabled = true;
+            loading.classList.add('active');
+
+            try {
+                const response = await fetch(`${API_URL}/payment/${code}/charge`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error(result.message);
+                }
+
+                // Redirect to Midtrans
+                window.location.href = result.data.redirect_url;
+
+            } catch (error) {
+                loading.classList.remove('active');
+                button.disabled = false;
+                showError('Gagal memproses pembayaran: ' + error.message);
+            }
+        });
+
+        // Helper functions
+        function formatPrice(price) {
+            return 'Rp ' + price.toLocaleString('id-ID');
+        }
+
+        function showError(message) {
+            const errorEl = document.getElementById('error');
+            errorEl.textContent = message;
+            errorEl.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>
