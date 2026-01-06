@@ -5,263 +5,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pembayaran Berhasil</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 40px;
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .success-icon {
-            width: 80px;
-            height: 80px;
-            background: #10b981;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            animation: scaleIn 0.5s ease-out;
-        }
-
-        .success-icon::after {
-            content: "✓";
-            color: white;
-            font-size: 48px;
-            font-weight: bold;
-        }
-
-        @keyframes scaleIn {
-            0% {
-                transform: scale(0);
-            }
-
-            50% {
-                transform: scale(1.1);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        h1 {
-            color: #10b981;
-            margin-bottom: 10px;
-            font-size: 28px;
-        }
-
-        .subtitle {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 16px;
-        }
-
-        .info-section {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: left;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .info-row:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .info-label {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .info-value {
-            color: #333;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .link-section {
-            margin: 30px 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-            border-radius: 12px;
-            border: 2px dashed #667eea;
-        }
-
-        .link-label {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .link-box {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            word-break: break-all;
-            color: #667eea;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 16px;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            margin-bottom: 10px;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-secondary {
-            background: white;
-            color: #667eea;
-            border: 2px solid #667eea;
-        }
-
-        .btn-secondary:hover {
-            background: #f8f9fa;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .error {
-            color: #e74c3c;
-            padding: 20px;
-            background: #ffe6e6;
-            border-radius: 12px;
-            margin-top: 20px;
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-    <div class="container">
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-8">
+
         <!-- Loading State -->
-        <div id="loadingState" class="loading">
-            <div class="spinner"></div>
-            <p style="color: #666;">Memuat informasi pembayaran...</p>
+        <div id="loadingState" class="text-center">
+            <div
+                class="inline-block w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4">
+            </div>
+            <p class="text-gray-600">Memuat informasi pembayaran...</p>
         </div>
 
         <!-- Success State -->
         <div id="successState" class="hidden">
-            <div class="success-icon"></div>
-            <h1>Pembayaran Berhasil!</h1>
-            <p class="subtitle">Terima kasih, pembayaran Anda telah kami terima</p>
+            <!-- Success Icon -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-4">
+                    <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-900 mb-2">Pembayaran Berhasil!</h1>
+                <p class="text-gray-600">Terima kasih, pembayaran Anda telah kami terima</p>
+            </div>
 
-            <div class="info-section">
-                <div class="info-row">
-                    <span class="info-label">Order ID</span>
-                    <span class="info-value" id="orderId">-</span>
+            <!-- Order Info -->
+            <div class="bg-gray-50 rounded-lg p-4 mb-6 space-y-3">
+                <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+                    <span class="text-sm text-gray-600">Order ID</span>
+                    <span class="text-sm font-semibold text-gray-900" id="orderId">-</span>
                 </div>
-                <div class="info-row">
-                    <span class="info-label">Total Bayar</span>
-                    <span class="info-value" id="price">-</span>
+                <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+                    <span class="text-sm text-gray-600">Total Bayar</span>
+                    <span class="text-sm font-semibold text-gray-900" id="price">-</span>
                 </div>
-                <div class="info-row">
-                    <span class="info-label">Waktu</span>
-                    <span class="info-value" id="paidAt">-</span>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Waktu</span>
+                    <span class="text-sm font-semibold text-gray-900" id="paidAt">-</span>
                 </div>
             </div>
 
-            <div class="link-section">
-                <div class="link-label">🎁 Link Tujuan Anda:</div>
-                <div class="link-box" id="targetUrl">-</div>
-                <a href="#" id="openLinkBtn" class="btn btn-primary" target="_blank">
+            <!-- Link Section -->
+            <div class="border-2 border-dashed border-blue-300 rounded-lg p-4 mb-4">
+                <p class="text-sm text-gray-700 font-medium mb-3">Link Tujuan Anda:</p>
+                <div class="bg-blue-50 rounded-lg p-3 mb-4 break-all text-sm text-blue-700 font-medium" id="targetUrl">-
+                </div>
+
+                <a href="#" id="openLinkBtn" target="_blank"
+                    class="block w-full bg-blue-600 text-white text-center font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors mb-2">
                     Buka Link
                 </a>
-                <button class="btn btn-secondary" id="copyLinkBtn">
-                    📋 Salin Link
+                <button id="copyLinkBtn"
+                    class="w-full bg-white border-2 border-blue-600 text-blue-600 font-semibold py-3 px-4 rounded-lg hover:bg-blue-50 transition-colors">
+                    Salin Link
                 </button>
             </div>
         </div>
 
         <!-- Error State -->
-        <div id="errorState" class="hidden">
-            <div style="font-size: 64px; margin-bottom: 20px;">❌</div>
-            <h1 style="color: #e74c3c;">Terjadi Kesalahan</h1>
-            <div class="error" id="errorMessage">
-                Gagal memuat informasi pembayaran
+        <div id="errorState" class="hidden text-center">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-red-100 rounded-full mb-4">
+                <svg class="w-12 h-12 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </div>
+            <h1 class="text-2xl font-bold text-red-600 mb-4">Terjadi Kesalahan</h1>
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                <p class="text-sm text-red-800" id="errorMessage">Gagal memuat informasi pembayaran</p>
             </div>
         </div>
+
     </div>
 
     <script>
         const API_URL = 'https://buy-and-get-v2-production.up.railway.app/api';
 
-        // Get order_id from URL
         const urlParams = new URLSearchParams(window.location.search);
         const orderId = urlParams.get('order_id');
 
@@ -271,7 +93,6 @@
             loadOrderInfo();
         }
 
-        // Load order information
         async function loadOrderInfo() {
             try {
                 const response = await fetch(`${API_URL}/payment/order/${orderId}`);
@@ -283,19 +104,16 @@
 
                 const data = result.data;
 
-                // Check if payment is successful
                 if (data.status !== 'paid') {
                     throw new Error('Pembayaran belum selesai atau gagal');
                 }
 
-                // Display success information
                 document.getElementById('orderId').textContent = data.order_id;
                 document.getElementById('price').textContent = formatPrice(data.price);
                 document.getElementById('paidAt').textContent = formatDate(data.paid_at);
                 document.getElementById('targetUrl').textContent = data.target_url;
                 document.getElementById('openLinkBtn').href = data.target_url;
 
-                // Show success state
                 document.getElementById('loadingState').classList.add('hidden');
                 document.getElementById('successState').classList.remove('hidden');
 
@@ -304,19 +122,22 @@
             }
         }
 
-        // Copy link to clipboard
         document.getElementById('copyLinkBtn').addEventListener('click', () => {
             const targetUrl = document.getElementById('targetUrl').textContent;
             navigator.clipboard.writeText(targetUrl).then(() => {
                 const btn = document.getElementById('copyLinkBtn');
-                btn.textContent = '✅ Link Tersalin!';
+                const originalText = btn.textContent;
+                btn.textContent = 'Link Tersalin!';
+                btn.classList.add('bg-green-50', 'border-green-600', 'text-green-600');
+                btn.classList.remove('border-blue-600', 'text-blue-600');
                 setTimeout(() => {
-                    btn.textContent = '📋 Salin Link';
+                    btn.textContent = originalText;
+                    btn.classList.remove('bg-green-50', 'border-green-600', 'text-green-600');
+                    btn.classList.add('border-blue-600', 'text-blue-600');
                 }, 2000);
             });
         });
 
-        // Helper functions
         function formatPrice(price) {
             return 'Rp ' + price.toLocaleString('id-ID');
         }
