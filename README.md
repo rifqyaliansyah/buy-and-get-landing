@@ -2,7 +2,7 @@
 
 Frontend untuk Payment Link Generator menggunakan plain HTML, CSS, dan vanilla JavaScript.
 
-## 📋 Files
+## Files
 
 ```
 frontend/
@@ -11,7 +11,7 @@ frontend/
 └── README.md
 ```
 
-## 🚀 Setup
+## Setup
 
 Frontend ini adalah **static HTML files** yang bisa langsung dibuka di browser atau di-serve menggunakan web server sederhana.
 
@@ -51,7 +51,7 @@ http-server -p 3000
 2. Right-click pada `pay.html` atau `success.html`
 3. Pilih "Open with Live Server"
 
-## 📄 Pages
+## Pages
 
 ### 1. pay.html - Halaman Pembayaran
 
@@ -93,7 +93,7 @@ http://localhost:3000/success.html?order_id=ORDER-xxx
 2. Frontend fetch order info dari backend
 3. Tampilkan link tujuan yang bisa dibuka user
 
-## ⚙️ Konfigurasi
+## Konfigurasi
 
 ### Update Backend URL
 
@@ -125,7 +125,7 @@ app.use(cors({
 }));
 ```
 
-## 🎨 Styling
+## Styling
 
 Frontend menggunakan **inline CSS** dengan desain modern:
 - Gradient background (purple theme)
@@ -135,14 +135,14 @@ Frontend menggunakan **inline CSS** dengan desain modern:
 - Loading states
 - Error handling UI
 
-## 📱 Responsive Design
+## Responsive Design
 
 Halaman sudah responsive dan bisa diakses dari:
 - Desktop
 - Tablet
 - Mobile phone
 
-## 🧪 Testing
+## Testing
 
 ### Test Payment Flow
 
@@ -168,7 +168,7 @@ curl -X POST http://localhost:5000/api/create-link \
 9. Akan redirect ke success page
 10. Link tujuan akan muncul
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Payment Link Tidak Muncul
 
@@ -189,7 +189,7 @@ curl -X POST http://localhost:5000/api/create-link \
 - Cek status pembayaran di database
 - Pastikan webhook sudah jalan (untuk update status paid)
 
-## 📝 Customization
+## Customization
 
 ### Ubah Warna Theme
 
@@ -217,7 +217,7 @@ Tambahkan tag `<img>` untuk logo:
 <img src="logo.png" alt="Logo" style="width: 100px;">
 ```
 
-## 🚀 Production Deployment
+## Production Deployment
 
 ### Deploy ke Vercel/Netlify
 
@@ -240,6 +240,6 @@ Jangan lupa update:
 - Backend URL di JavaScript
 - Midtrans redirect URL di dashboard
 
-## 📝 License
+## License
 
 MIT
